@@ -119,21 +119,6 @@ inf_board = Spiral_Board()
 
 pos = (0, 0)
 
-while True:#for i in range(20):
-    #if inf_board.spiral_board_10000[pos] == 2084:
-    #    print("this is where it should have ended")
-    #   sys.exit(1)
-    #print(inf_board.possible_moves(pos))
-    #print([inf_board.spiral_board_10000[place] for place in inf_board.possible_moves(pos)])
+while True:
     pos = inf_board.move(pos)
 
-
-
-'''
-print("hi")
-for i in range(10):
-    print(i)
-    if i == 6:
-        sys.exit(1)
-
-'''
