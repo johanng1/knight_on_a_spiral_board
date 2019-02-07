@@ -1,92 +1,139 @@
 ##  Knight on an infinite chess board problem - seen on Numberphile
+import sys
+
+
+
+def move_right(pos):
+    (x, y) = pos
+    return (x+1, y)
+
+def move_up(pos):
+    (x, y) = pos
+    return (x, y+1)
+
+def move_left(pos):
+    (x, y) = pos
+    return (x-1, y)
+
+def move_down(pos):
+    (x, y) = pos
+    return (x, y-1)
+
+
+
+
+
+def make_spiral_board(num_range):
+    print("make_spiral_board")
+    spiral_positions = {
+    (0, 0): 1
+    }
+
+    moves = ["right", "up", "left", "down"]
+    position = (0, 0)
+    move_until = 1
+    counter_move_twice = 1
+    counter_until = 1
+    for i in range(2, num_range):
+
+        if moves[0] == "right":
+            position = move_right(position)
+        if moves[0] == "up":
+            position = move_up(position)
+        if moves[0] == "left":
+            position = move_left(position)
+        if moves[0] == "down":          
+            position = move_down(position)
+
+        
+
+        spiral_positions[position] = i
+
+
+        if counter_until == move_until:
+            counter_until = 1
+            moves = moves[1:] + [moves[0]]
+            if counter_move_twice == 2:
+                counter_move_twice = 1
+                move_until += 1
+            else:
+                counter_move_twice += 1
+            
+        else:
+            counter_until += 1
+
+
+    return spiral_positions
+
 
 
 
 class Spiral_Board:
 
-	#def __init__(self):
+    #def __init__(self, colour):
+    #    self.colour = colour
 
 
-	def calculate_spiral_number(self, position):
-		if position in self.already_visited:
-			return "already visited"
-		else:
-			already_visited.append(position)
-			pass # this is the hard bit
-			# need to work out how to calculate the number based on the 2d coordinates
+    spiral_board_10000 = make_spiral_board(10000)
 
 
-	def possible_moves(self, position):
-		coord_changes = [(2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1), (-2, 1), (-1, 2), (1, 2)]
+    def best_move(self, position):
+        #print("best move")
+        possible_moves = self.possible_moves(position)
+        possible_moves = [(self.spiral_board_10000[pos_move], pos_move) for pos_move in possible_moves if type(self.spiral_board_10000[pos_move]) == int]
+        #print("possible_moves: ", possible_moves)
+        if possible_moves != []:
+            best_move = min(possible_moves)
+            return best_move # (smallest number, position of that number)
+        else:
+            print("There are no options remaining")
+            print(f"The Knight made it to space {position}, which is number {self.spiral_board_10000[position]}")
+            sys.exit(1)
 
-		pos_moves = [tuple(map(sum, zip(change, position))) for change in coord_changes]
 
-		return pos_moves
-
-
-	def move_right(self, pos):
-		(x, y) = pos
-		return (x+1, y)
-
-	def move_up(self, pos):
-		(x, y) = pos
-		return (x, y+1)
-
-	def move_left(self, pos):
-		(x, y) = pos
-		return (x-1, y)
-
-	def move_down(self, pos):
-		(x, y) = pos
-		return (x, y-1)
+    def move(self, position):
+        #print(position, self.spiral_board_10000[position])
+        (next_num, next_pos) = self.best_move(position)
+        self.spiral_board_10000[position] = "visited"
+        return next_pos
 
 
 
 
-	def make_spiral_board(self, num_range):
-		spiral_positions = {
-		(0, 0): 1
-		}
+    def possible_moves(self, position):
+        #print("possible_moves")
+        coord_changes = [(2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1), (-2, 1), (-1, 2), (1, 2)]
 
-		moves = ["right", "up", "left", "down"]
-		position = (0, 0)
-		move_until = 1
-		counter_move_twice = 1
-		counter_until = 1
-		for i in range(2, num_range):
+        pos_moves = [tuple(map(sum, zip(change, position))) for change in coord_changes]
 
-			if moves[0] == "right":
-				position = self.move_right(position)
-			if moves[0] == "up":
-				position = self.move_up(position)
-			if moves[0] == "left":
-				position = self.move_left(position)
-			if moves[0] == "down":			
-				position = self.move_down(position)
-
-			
-
-			spiral_positions[position] = i
-
-
-			if counter_until == move_until:
-				counter_until = 1
-				moves = moves[1:] + [moves[0]]
-				if counter_move_twice == 2:
-					counter_move_twice = 1
-					move_until += 1
-				else:
-					counter_move_twice += 1
-				
-			else:
-				counter_until += 1
-
-
-		return spiral_positions
+        return pos_moves
 
 
 
 
 
 
-print(Spiral_Board().make_spiral_board(10))
+    
+
+inf_board = Spiral_Board()
+
+pos = (0, 0)
+
+while True:#for i in range(20):
+    #if inf_board.spiral_board_10000[pos] == 2084:
+    #    print("this is where it should have ended")
+    #   sys.exit(1)
+    #print(inf_board.possible_moves(pos))
+    #print([inf_board.spiral_board_10000[place] for place in inf_board.possible_moves(pos)])
+    pos = inf_board.move(pos)
+
+
+
+'''
+print("hi")
+for i in range(10):
+    print(i)
+    if i == 6:
+        sys.exit(1)
+
+'''
